@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import type { ReactNode } from "react";
 
 
@@ -25,7 +25,19 @@ export const todoContext = createContext<contextType | null>(null)
 
 export const TodoProvider = ({ children }: { children: ReactNode }) => {
 
-  const [todos, setTodos] = useState<createContextType[]>([{id: Date().toString(), todo:"This is default Todo text, you can delete it", status: true}])
+  const [todos, setTodos] = useState<createContextType[]>(()=>{
+    const stored = localStorage.getItem("todos");
+    return stored ? JSON.parse(stored) : [
+      {
+        id : Date().toString(),
+        todo : "This is default Todo text, you can delete it",
+        status: true
+      },]
+  })
+
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos])
 
   const todoHandler = (todo: createContextType) => {
     setTodos(prev => [...prev, todo])
@@ -39,7 +51,7 @@ export const TodoProvider = ({ children }: { children: ReactNode }) => {
 
   }
   const deleteTodo = (id: string) => {
-    const updatedTodos = todos.filter((todo)=> todo.id !== id)
+    const updatedTodos = todos.filter((todo) => todo.id !== id)
     setTodos(updatedTodos)
   }
 

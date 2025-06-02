@@ -41,7 +41,7 @@ function AddTodo() {
                     <div className="h-[90%] w-[100%]  flex justify-center items-center ">
                         {active == "All" ? <AllTodos/> : active == "Active" ? <Active/> : <CompletedTodos/>}
                     </div>
-                </div>``
+                </div>
             </div>
         </>
     )
